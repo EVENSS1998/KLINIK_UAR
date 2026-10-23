@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Kelola Pengguna - Admin{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Kelola Pengguna</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-secondary">
+            <tr>
+                <th>#</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>john@example.com</td>
+                <td><span class="badge bg-info">User</span></td>
+                <td>
+                    <button class="btn btn-sm btn-danger">Hapus</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

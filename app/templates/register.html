@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun Pasien Baru - ToPung UAR</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-emerald: #0b4d3b;
+            --primary-dark: #073327;
+            --primary-light: #156d54;
+            --accent-green: #10b981;
+            --accent-subtle: #ecfdf5;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --card-bg: #ffffff;
+            --body-bg: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Left Side: Brand Showcase */
+        .auth-brand-side {
+            background: linear-gradient(145deg, var(--primary-dark) 0%, var(--primary-emerald) 60%, var(--primary-light) 100%);
+            color: #ffffff;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-brand-side::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .auth-brand-side::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .brand-logo-badge {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .showcase-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .showcase-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.13);
+        }
+
+        .feature-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        /* Right Side: Form Area */
+        .auth-form-side {
+            background: #ffffff;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 991px) {
+            .auth-form-side {
+                padding: 30px 20px;
+            }
+        }
+
+        .top-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .back-nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        .back-nav-link:hover {
+            color: var(--primary-emerald);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #065f46;
+            background-color: #d1fae5;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        .portal-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--primary-emerald);
+            background-color: var(--accent-subtle);
+            padding: 5px 12px;
+            border-radius: 999px;
+            border: 1px solid #d1fae5;
+            margin-bottom: 10px;
+        }
+
+        .portal-heading {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            line-height: 1.25;
+            margin-bottom: 6px;
+        }
+
+        .portal-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+
+        /* Tab Switcher: Masuk vs Daftar */
+        .auth-tabs-nav {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px 14px;
+            border-radius: 9px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .auth-tab-btn.active {
+            background: #ffffff;
+            color: var(--primary-emerald);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Google Social Button */
+        .btn-google {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 11px 16px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .btn-google:hover {
+            background-color: #f8fafc;
+            border-color: #94a3b8;
+            color: #0f172a;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Divider */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #94a3b8;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .auth-divider span {
+            padding: 0 14px;
+        }
+
+        /* Form Labels & Controls */
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sub-label-hint {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #64748b;
+        }
+
+        .input-group-custom {
+            position: relative;
+        }
+
+        .input-group-custom .input-icon-left {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.95rem;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .input-group-custom .form-control,
+        .input-group-custom .form-select {
+            padding-left: 42px;
+            padding-right: 14px;
+            height: 46px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .input-group-custom .form-control:focus,
+        .input-group-custom .form-select:focus {
+            border-color: var(--primary-emerald);
+            box-shadow: 0 0 0 4px rgba(11, 77, 59, 0.12);
+        }
+
+        /* WhatsApp Input Group with +62 */
+        .wa-input-group {
+            display: flex;
+        }
+
+        .wa-prefix-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-right: none;
+            padding: 0 14px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #334155;
+        }
+
+        .wa-input-group .form-control {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            padding-left: 14px;
+            height: 46px;
+            font-size: 0.9rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        .wa-input-group .form-control:focus {
+            border-color: var(--primary-emerald);
+            box-shadow: 0 0 0 4px rgba(11, 77, 59, 0.12);
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 0.95rem;
+            z-index: 5;
+            transition: color 0.2s;
+        }
+
+        .toggle-password-btn:hover {
+            color: var(--primary-emerald);
+        }
+
+        /* Password Strength Meter */
+        .password-strength-box {
+            margin-top: 6px;
+        }
+
+        .strength-bar-container {
+            height: 4px;
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 999px;
+        }
+
+        .strength-text {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        /* Submit Button */
+        .btn-submit-register {
+            background-color: var(--primary-emerald);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.96rem;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            width: 100%;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(11, 77, 59, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .btn-submit-register:hover {
+            background-color: var(--primary-dark);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(11, 77, 59, 0.35);
+        }
+
+        /* Security Assurance Banner */
+        .security-badge-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-top: 22px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .security-badge-icon {
+            color: var(--accent-green);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .security-badge-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .security-badge-text {
+            font-size: 0.77rem;
+            color: #475569;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-emerald);
+            border-color: var(--primary-emerald);
+        }
+
+        .form-check-label {
+            font-size: 0.82rem;
+            color: #475569;
+            line-height: 1.45;
+        }
+
+        .auth-switch-prompt {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 0.88rem;
+            color: #64748b;
+        }
+
+        .auth-switch-prompt a {
+            color: var(--primary-emerald);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .auth-switch-prompt a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0 auth-wrapper">
+
+            <!-- LEFT COLUMN: Brand Showcase (Desktop) -->
+            <div class="col-lg-5 col-xl-5 d-none d-lg-flex auth-brand-side">
+                <div>
+                    <!-- Brand Top -->
+                    <div class="d-flex align-items-center gap-3 mb-5">
+                        <div class="brand-logo-badge">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+                        <div>
+                            <div class="brand-title">ToPung UAR</div>
+                            <small class="opacity-75">Sistem Layanan Terapi & Kesehatan</small>
+                        </div>
+                    </div>
+
+                    <!-- Main Pitch -->
+                    <div class="mb-5">
+                        <span class="badge bg-white text-success px-3 py-2 rounded-pill fw-bold mb-3">Registrasi Pasien
+                            Baru</span>
+                        <h1 class="display-6 fw-bold mb-3">Mulai Perjalanan Pemulihan & Terapi Mandiri Anda</h1>
+                        <p class="lead opacity-85 fs-6">
+                            Dapatkan kemudahan penjadwalan terapi, monitoring riwayat medis holistik, dan konsultasi
+                            privat langsung dalam satu akun terpadu.
+                        </p>
+                    </div>
+
+                    <!-- Highlights Cards -->
+                    <div class="showcase-card d-flex align-items-center gap-3">
+                        <div class="feature-icon-box">
+                            <i class="fa-solid fa-file-waveform text-warning"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold mb-0">Pendaftaran Praktis & Terintegrasi</div>
+                            <small class="opacity-75">Satu akun untuk seluruh reservasi terapi, rujukan, dan kunjungan
+                                homecare.</small>
+                        </div>
+                    </div>
+
+                    <div class="showcase-card d-flex align-items-center gap-3">
+                        <div class="feature-icon-box">
+                            <i class="fa-solid fa-user-shield text-info"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold mb-0">Data Medis Terenkripsi TLS 1.3</div>
+                            <small class="opacity-75">Kerahasiaan rekam medis pasien terproteksi sesuai standar Kemenkes
+                                RI.</small>
+                        </div>
+                    </div>
+
+                    <div class="showcase-card d-flex align-items-center gap-3">
+                        <div class="feature-icon-box">
+                            <i class="fa-brands fa-whatsapp text-light"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold mb-0">Konfirmasi Jadwal Otomatis</div>
+                            <small class="opacity-75">Notifikasi pengingat terapi dan info terapis dikirim via
+                                WhatsApp.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Credibility -->
+                <div
+                    class="pt-4 border-top border-white border-opacity-25 d-flex justify-content-between align-items-center">
+                    <div class="small opacity-75">
+                        <i class="fa-solid fa-shield-halved me-1"></i> Standar Keamanan TLS 1.3
+                    </div>
+                    <div class="small opacity-75">
+                        <i class="fa-solid fa-certificate me-1"></i> Regulasi Kemenkes RI
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Registration Form Area -->
+            <div class="col-lg-7 col-xl-7 auth-form-side">
+                <div class="mx-auto w-100" style="max-width: 520px;">
+
+                    <!-- Top Navigation & Live Status -->
+                    <div class="top-status-row">
+                        <a href="/" class="back-nav-link">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Kembali ke Beranda ToPung UAR
+                        </a>
+                        <div class="status-pill">
+                            <span class="status-dot"></span>
+                            <span>Sistem Pelayanan Aktif</span>
+                        </div>
+                    </div>
+
+                    <!-- Category Badge -->
+                    <div>
+                        <span class="portal-pill">
+                            <i class="fa-solid fa-circle-check"></i> PORTAL PASIEN & TERAPI TERINTEGRASI
+                        </span>
+                    </div>
+
+                    <!-- Headers -->
+                    <h2 class="portal-heading">Daftar Akun Pasien Baru</h2>
+                    <p class="portal-desc">
+                        Lengkapi data Anda untuk kemudahan reservasi terapi, konsultasi, dan riwayat rekam medis terpadu
+                        di ToPung UAR.
+                    </p>
+
+                    <!-- Tab Switcher (Masuk vs Daftar) -->
+                    <div class="auth-tabs-nav">
+                        <a href="{{ url_for('login') if 'login' in config else '/login' }}" class="auth-tab-btn"
+                            id="tabLogin">
+                            <i class="fa-solid fa-right-to-bracket me-1"></i> Masuk (Login)
+                        </a>
+                        <button type="button" class="auth-tab-btn active" id="tabRegister">
+                            <i class="fa-solid fa-user-plus me-1"></i> Daftar Akun Baru (Registrasi)
+                        </button>
+                    </div>
+
+                    <!-- Social Signup: Google -->
+                    <button type="button" class="btn btn-google mb-3">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.64 9.20455C17.64 8.56636 17.5827 7.95273 17.4764 7.36364H9V10.845H13.8436C13.635 11.97 13.0009 12.9232 12.0477 13.5614V15.8195H14.9564C16.6582 14.2527 17.64 11.9455 17.64 9.20455Z"
+                                fill="#4285F4" />
+                            <path
+                                d="M9 18C11.43 18 13.4673 17.1941 14.9564 15.8195L12.0477 13.5614C11.2418 14.1014 10.2109 14.4205 9 14.4205C6.65591 14.4205 4.67182 12.8373 3.96409 10.71H0.957275V13.0418C2.43818 15.9832 5.48182 18 9 18Z"
+                                fill="#34A853" />
+                            <path
+                                d="M3.96409 10.71C3.78409 10.17 3.68182 9.59318 3.68182 9C3.68182 8.40682 3.78409 7.83 3.96409 7.29V4.95818H0.957275C0.347727 6.17318 0 7.54773 0 9C0 10.4523 0.347727 11.8268 0.957275 13.0418L3.96409 10.71Z"
+                                fill="#FBBC05" />
+                            <path
+                                d="M9 3.57955C10.3214 3.57955 11.5077 4.03364 12.4405 4.92545L15.0218 2.34409C13.4632 0.891818 11.4259 0 9 0C5.48182 0 2.43818 2.01682 0.957275 4.95818L3.96409 7.29C4.67182 5.16273 6.65591 3.57955 9 3.57955Z"
+                                fill="#EA4335" />
+                        </svg>
+                        <span>Daftar Cepat dengan Google</span>
+                    </button>
+
+                    <!-- Divider -->
+                    <div class="auth-divider">
+                        <span>ATAU DAFTAR DENGAN DATA DIRI</span>
+                    </div>
+
+                    <!-- Register Form -->
+                    <form action="#" method="POST" id="registerForm">
+
+                        <!-- Field 1: Nama Lengkap -->
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">
+                                <span>Nama Lengkap <span class="text-danger">*</span></span>
+                                <span class="sub-label-hint">(sesuai identitas KTP/Paspor)</span>
+                            </label>
+                            <div class="input-group-custom">
+                                <i class="fa-regular fa-user input-icon-left"></i>
+                                <input type="text" class="form-control" id="fullName" name="full_name" required
+                                    placeholder="cth. Rian Kusuma" autocomplete="name">
+                            </div>
+                        </div>
+
+                        <!-- Field 2: Nomor WhatsApp Aktif -->
+                        <div class="mb-3">
+                            <label for="whatsapp" class="form-label">
+                                <span>Nomor WhatsApp Aktif <span class="text-danger">*</span></span>
+                                <span class="sub-label-hint">(untuk konfirmasi jadwal & OTP)</span>
+                            </label>
+                            <div class="wa-input-group">
+                                <span class="wa-prefix-badge">
+                                    <i class="fa-brands fa-whatsapp text-success me-1"></i> +62
+                                </span>
+                                <input type="tel" class="form-control" id="whatsapp" name="whatsapp" required
+                                    placeholder="812-3456-7890" autocomplete="tel-national">
+                            </div>
+                        </div>
+
+                        <!-- Field 3: Alamat Email Aktif -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                <span>Alamat Email Aktif <span class="text-danger">*</span></span>
+                            </label>
+                            <div class="input-group-custom">
+                                <i class="fa-regular fa-envelope input-icon-left"></i>
+                                <input type="email" class="form-control" id="email" name="email" required
+                                    placeholder="nama@email.com" autocomplete="email">
+                            </div>
+                        </div>
+
+                        <!-- Row: Tanggal Lahir & Jenis Kelamin -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-sm-6">
+                                <label for="birthDate" class="form-label">
+                                    <span>Tanggal Lahir <span class="text-danger">*</span></span>
+                                </label>
+                                <div class="input-group-custom">
+                                    <i class="fa-regular fa-calendar input-icon-left"></i>
+                                    <input type="date" class="form-control" id="birthDate" name="birth_date" required
+                                        placeholder="mm / dd / yyyy">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="gender" class="form-label">
+                                    <span>Jenis Kelamin <span class="text-danger">*</span></span>
+                                </label>
+                                <div class="input-group-custom">
+                                    <i class="fa-solid fa-venus-mars input-icon-left"></i>
+                                    <select class="form-select" id="gender" name="gender" required>
+                                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                        <option value="L">Laki-laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Field 5: Kata Sandi Baru -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <span>Kata Sandi Baru <span class="text-danger">*</span></span>
+                                <span class="sub-label-hint">Minimal 8 karakter, kombinasi huruf & angka</span>
+                            </label>
+                            <div class="input-group-custom">
+                                <i class="fa-solid fa-lock input-icon-left"></i>
+                                <input type="password" class="form-control" id="password" name="password" required
+                                    placeholder="Minimal 8 karakter" autocomplete="new-password">
+                                <button type="button" class="toggle-password-btn" id="togglePassword"
+                                    aria-label="Tampilkan kata sandi">
+                                    <i class="fa-regular fa-eye" id="toggleIcon"></i>
+                                </button>
+                            </div>
+                            <!-- Password Strength Indicator -->
+                            <div class="password-strength-box">
+                                <div class="strength-bar-container">
+                                    <div class="strength-bar" id="strengthBar"></div>
+                                </div>
+                                <span class="strength-text" id="strengthText">Kekuatan: Belum diisi</span>
+                            </div>
+                        </div>
+
+                        <!-- Field 6: Konfirmasi Kata Sandi -->
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">
+                                <span>Konfirmasi Kata Sandi <span class="text-danger">*</span></span>
+                            </label>
+                            <div class="input-group-custom">
+                                <i class="fa-solid fa-shield-halved input-icon-left"></i>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirm_password"
+                                    required placeholder="Ulangi kata sandi Anda" autocomplete="new-password">
+                                <button type="button" class="toggle-password-btn" id="toggleConfirmPassword"
+                                    aria-label="Tampilkan konfirmasi kata sandi">
+                                    <i class="fa-regular fa-eye" id="toggleConfirmIcon"></i>
+                                </button>
+                            </div>
+                            <small class="text-danger d-none" id="passwordMismatch">Kata sandi tidak cocok</small>
+                        </div>
+
+                        <!-- Checkbox Persetujuan -->
+                        <div class="form-check mb-4 mt-3">
+                            <input class="form-check-input" type="checkbox" value="1" id="termsAgreement" required>
+                            <label class="form-check-label" for="termsAgreement">
+                                Saya menyetujui <a href="#" class="text-decoration-none text-success fw-semibold">Syarat
+                                    & Ketentuan Layanan</a> serta <a href="#"
+                                    class="text-decoration-none text-success fw-semibold">Kebijakan Privasi Rekam
+                                    Medis</a> ToPung UAR.
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-submit-register">
+                            <span>Daftar Akun Sekarang</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <!-- Already have account link -->
+                    <div class="auth-switch-prompt">
+                        Sudah memiliki akun pasien?
+                        <a href="{{ url_for('login') if 'login' in config else '/login' }}">Masuk di sini</a>
+                    </div>
+
+                    <!-- Security Assurance Banner -->
+                    <div class="security-badge-box">
+                        <i class="fa-solid fa-shield-halved security-badge-icon"></i>
+                        <div>
+                            <div class="security-badge-title">Jaminan Keamanan Rekam Medis</div>
+                            <p class="security-badge-text">
+                                Data kesehatan & identitas pasien dilindungi enkripsi standar <strong>TLS 1.3</strong>
+                                dan kepatuhan privasi medis <strong>Kemenkes RI</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle Password Show / Hide
+        function setupToggle(btnId, inputId, iconId) {
+            const btn = document.getElementById(btnId);
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (btn && input && icon) {
+                btn.addEventListener('click', function () {
+                    const isPassword = input.getAttribute('type') === 'password';
+                    input.setAttribute('type', isPassword ? 'text' : 'password');
+                    icon.className = isPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+                });
+            }
+        }
+
+        setupToggle('togglePassword', 'password', 'toggleIcon');
+        setupToggle('toggleConfirmPassword', 'confirmPassword', 'toggleConfirmIcon');
+
+        // Real-time Password Strength Meter
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+
+        if (passwordInput && strengthBar && strengthText) {
+            passwordInput.addEventListener('input', function () {
+                const val = this.value;
+                if (!val) {
+                    strengthBar.style.width = '0%';
+                    strengthBar.style.backgroundColor = 'transparent';
+                    strengthText.textContent = 'Kekuatan: Belum diisi';
+                    strengthText.style.color = '#64748b';
+                    return;
+                }
+
+                let score = 0;
+                if (val.length >= 8) score++;
+                if (/[a-z]/.test(val) && /[A-Z]/.test(val)) score++;
+                if (/\d/.test(val)) score++;
+                if (/[^a-zA-Z\d]/.test(val)) score++;
+
+                if (val.length < 8) {
+                    strengthBar.style.width = '25%';
+                    strengthBar.style.backgroundColor = '#ef4444';
+                    strengthText.textContent = 'Kekuatan: Lemah (minimal 8 karakter)';
+                    strengthText.style.color = '#ef4444';
+                } else if (score <= 2) {
+                    strengthBar.style.width = '50%';
+                    strengthBar.style.backgroundColor = '#f59e0b';
+                    strengthText.textContent = 'Kekuatan: Sedang (tambahkan variasi karakter)';
+                    strengthText.style.color = '#d97706';
+                } else if (score === 3) {
+                    strengthBar.style.width = '75%';
+                    strengthBar.style.backgroundColor = '#10b981';
+                    strengthText.textContent = 'Kekuatan: Baik';
+                    strengthText.style.color = '#059669';
+                } else {
+                    strengthBar.style.width = '100%';
+                    strengthBar.style.backgroundColor = '#0b4d3b';
+                    strengthText.textContent = 'Kekuatan: Sangat Kuat';
+                    strengthText.style.color = '#0b4d3b';
+                }
+            });
+        }
+
+        // Real-time Password Matching Validation
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const mismatchWarning = document.getElementById('passwordMismatch');
+
+        if (confirmPasswordInput && passwordInput && mismatchWarning) {
+            confirmPasswordInput.addEventListener('input', function () {
+                if (this.value && this.value !== passwordInput.value) {
+                    mismatchWarning.classList.remove('d-none');
+                } else {
+                    mismatchWarning.classList.add('d-none');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

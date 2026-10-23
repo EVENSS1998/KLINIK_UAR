@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - SehatCare ToPung UAR</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #0b4d3b;
+            --primary-hover: #083a2c;
+            --bg-light: #f7faf8;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2b2b2b;
+            background-color: #ffffff;
+        }
+
+        /* Navbar Custom */
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+        }
+
+        .btn-green {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .btn-green:hover {
+            background-color: var(--primary-hover);
+            color: #ffffff;
+        }
+
+        .btn-outline-green {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .btn-outline-green:hover {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: var(--bg-light);
+            padding: 50px 0;
+            border-radius: 16px;
+        }
+
+        /* Cards */
+        .card-custom {
+            border: 1px solid #eef2f0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .card-custom:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .badge-category {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Steps Section */
+        .step-box {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid #f0f0f0;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: #e8f5e9;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <i class="fa-solid fa-heart-pulse text-success fs-4"></i>
+                <span>SehatCare</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link fw-medium text-dark active" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link fw-medium" href="/booking">Layanan Terapi</a></li>
+                    <li class="nav-item"><a class="nav-link fw-medium" href="/booking">Reservasi</a></li>
+                    <li class="nav-item"><a class="nav-link fw-medium" href="#">Toko</a></li>
+                    <li class="nav-item"><a class="nav-link fw-medium" href="#">Edukasi</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/login" class="btn btn-outline-secondary btn-sm px-3">Masuk</a>
+                    <a href="/register" class="btn btn-outline-green btn-sm px-3">Daftar</a>
+                    <a href="/booking" class="btn btn-green btn-sm px-3">Pesan Sekarang</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+
+        <!-- HERO SECTION -->
+        <section class="hero-section mb-5 px-4">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h1 class="fw-bold display-5 mb-3">
+                        Pulihkan Keseimbangan Tubuh & Pikiran Bersama <span class="text-success">Terapis
+                            Profesional</span> Terlisensi
+                    </h1>
+                    <p class="text-muted mb-4">
+                        Layanan terapi kesehatan terlengkap dengan metode holistik dan ditangani langsung oleh terapis
+                        ahli berpengalaman untuk pemulihan optimal Anda.
+                    </p>
+                    <a href="/booking" class="btn btn-green btn-lg px-4 fs-6"><i
+                            class="fa-solid fa-calendar-check me-2"></i>Pesan Sesi Terapi Sekarang</a>
+
+                    <div class="d-flex gap-4 mt-4 pt-2 text-muted small">
+                        <div><i class="fa-solid fa-user-check text-success me-1"></i> Terapis Bersertifikat</div>
+                        <div><i class="fa-solid fa-clock text-success me-1"></i> Jadwal Fleksibel</div>
+                        <div><i class="fa-solid fa-shield-halved text-success me-1"></i> Terjamin Aman</div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&q=80&w=800"
+                            class="img-fluid rounded-4 shadow-sm w-100" alt="Terapi">
+                        <div
+                            class="position-absolute bottom-0 start-0 bg-dark bg-opacity-75 text-white p-3 rounded-3 m-3 backdrop-blur">
+                            <small class="d-block text-warning"><i class="fa-solid fa-star"></i> 4.9/5.0 Ringkasan
+                                Kepuasan Pasien</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAYANAN TERAPI UNGGULAN -->
+        <section class="mb-5">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <small class="text-uppercase text-success fw-bold">Layanan Terbaik</small>
+                    <h2 class="fw-bold mb-0">Layanan Terapi Unggulan Bersertifikasi</h2>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary btn-sm active">Semua Layanan</button>
+                    <button class="btn btn-outline-secondary btn-sm">Fisioterapi</button>
+                    <button class="btn btn-outline-secondary btn-sm">Relaksasi</button>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Card 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card card-custom h-100 p-3">
+                        <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&q=80&w=400"
+                            class="card-img-top rounded-3 mb-3" alt="Terapi">
+                        <span
+                            class="badge badge-category bg-success-subtle text-success w-auto align-self-start mb-2">Fisioterapi</span>
+                        <h6 class="fw-bold mb-1">Fisioterapi & Cedera Olahraga</h6>
+                        <p class="text-muted small">Penanganan pemulihan cedera dan nyeri persendian.</p>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">Rp 250.000</span>
+                            <a href="/booking" class="btn btn-green btn-sm">Pilih Layanan</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card card-custom h-100 p-3">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=400"
+                            class="card-img-top rounded-3 mb-3" alt="Terapi">
+                        <span
+                            class="badge badge-category bg-info-subtle text-info w-auto align-self-start mb-2">Peregangan</span>
+                        <h6 class="fw-bold mb-1">Terapi Okupasi & Stimulasi</h6>
+                        <p class="text-muted small">Latihan motorik untuk aktivitas harian yang efisien.</p>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">Rp 220.000</span>
+                            <a href="/booking" class="btn btn-green btn-sm">Pilih Layanan</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card card-custom h-100 p-3">
+                        <img src="https://images.unsplash.com/photo-1512290900673-201509939501?auto=format&fit=crop&q=80&w=400"
+                            class="card-img-top rounded-3 mb-3" alt="Terapi">
+                        <span
+                            class="badge badge-category bg-warning-subtle text-warning w-auto align-self-start mb-2">Akupunktur</span>
+                        <h6 class="fw-bold mb-1">Akupunktur Medik & Saraf</h6>
+                        <p class="text-muted small">Stimulasi saraf untuk meredakan nyeri kronis.</p>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">Rp 280.000</span>
+                            <a href="/booking" class="btn btn-green btn-sm">Pilih Layanan</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card card-custom h-100 p-3">
+                        <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&q=80&w=400"
+                            class="card-img-top rounded-3 mb-3" alt="Terapi">
+                        <span
+                            class="badge badge-category bg-primary-subtle text-primary w-auto align-self-start mb-2">Konseling</span>
+                        <h6 class="fw-bold mb-1">Konseling & Relaksasi Mindful</h6>
+                        <p class="text-muted small">Terapi mental untuk mengurangi stres dan kecemasan.</p>
+                        <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-success">Rp 300.000</span>
+                            <a href="/booking" class="btn btn-green btn-sm">Pilih Layanan</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3 LANGKAH MUDAH -->
+        <section class="bg-light p-4 rounded-4 mb-5">
+            <div class="text-center mb-4">
+                <small class="text-uppercase text-success fw-bold">Mudah & Cepat</small>
+                <h3 class="fw-bold">3 Langkah Mudah Menuju Pemulihan</h3>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="step-box h-100">
+                        <div class="step-number mb-3">01</div>
+                        <h6 class="fw-bold">Pilih Jadwal & Terapis</h6>
+                        <p class="text-muted small">Tentukan waktu yang fleksibel dan pilih terapis sesuai dengan
+                            kebutuhan medis Anda.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-box h-100">
+                        <div class="step-number mb-3">02</div>
+                        <h6 class="fw-bold">Tentukan Lokasi Sesi</h6>
+                        <p class="text-muted small">Pilih untuk mendapatkan penanganan di klinik terdekat atau kunjungan
+                            terapis ke rumah (Homecare).</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-box h-100">
+                        <div class="step-number mb-3">03</div>
+                        <h6 class="fw-bold">Konfirmasi & Mulai Terapi</h6>
+                        <p class="text-muted small">Selesaikan pembayaran secara aman dan mulai sesi pemulihan kesehatan
+                            Anda.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PERALATAN PEMUNJANG -->
+        <section class="mb-5">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <h3 class="fw-bold mb-0">Peralatan Pemunjang Terapi Terbaik</h3>
+                </div>
+                <a href="#" class="text-success text-decoration-none fw-bold small">Kunjungi Toko Lengkap <i
+                        class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card card-custom p-3">
+                        <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=400"
+                            class="card-img-top rounded-3 mb-2" alt="Produk">
+                        <h6 class="fw-bold mb-1">Medical Kinesiology Tape (Roll)</h6>
+                        <p class="text-muted small">Plester medis penopang otot cedera.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-success">Rp 65.000</span>
+                            <button class="btn btn-outline-green btn-sm"><i class="fa-solid fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-custom p-3">
+                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=400"
+                            class="card-img-top rounded-3 mb-2" alt="Produk">
+                        <h6 class="fw-bold mb-1">Ergonomic Foam Roller Grid</h6>
+                        <p class="text-muted small">Busa pijat pemulihan ketegangan otot.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-success">Rp 160.000</span>
+                            <button class="btn btn-outline-green btn-sm"><i class="fa-solid fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-custom p-3">
+                        <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=400"
+                            class="card-img-top rounded-3 mb-2" alt="Produk">
+                        <h6 class="fw-bold mb-1">Aromatherapy Soothing Therapy Oil</h6>
+                        <p class="text-muted small">Minyak esensial relaksasi dan pijat.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-success">Rp 125.000</span>
+                            <button class="btn btn-outline-green btn-sm"><i class="fa-solid fa-cart-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA BANNER -->
+        <section class="cta-banner d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h3 class="fw-bold mb-2">Masih Ragu Menentukan Terapi yang Tepat?</h3>
+                <p class="mb-0 text-light opacity-75">Konsultasikan keluhan fisik atau psikis Anda secara gratis bersama
+                    tim medis kami.</p>
+            </div>
+            <div class="d-flex gap-3">
+                <a href="https://wa.me/628123456789" target="_blank" class="btn btn-light text-success fw-bold px-4"><i
+                        class="fa-brands fa-whatsapp me-2"></i>Chat WhatsApp</a>
+                <a href="/booking" class="btn btn-outline-light px-4">Pilih Jadwal</a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-light pt-5 pb-3 border-top">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="/">
+                        <i class="fa-solid fa-heart-pulse text-success fs-4"></i>
+                        <span>SehatCare</span>
+                    </a>
+                    <p class="text-muted small">Layanan penyedia solusi kesehatan tubuh dan terapi terpercaya langsung
+                        ke tempat Anda.</p>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="fw-bold mb-3">Layanan Kami</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="/booking" class="text-decoration-none text-muted">Fisioterapi</a></li>
+                        <li class="mb-2"><a href="/booking" class="text-decoration-none text-muted">Terapi Okupasi</a>
+                        </li>
+                        <li class="mb-2"><a href="/booking" class="text-decoration-none text-muted">Akupunktur</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="fw-bold mb-3">Perusahaan</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Tentang Kami</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Karir Terapis</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Kontak</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold mb-3">Kontak SehatCare</h6>
+                    <p class="text-muted small mb-1"><i class="fa-solid fa-envelope me-2"></i> support@sehatcare.com</p>
+                    <p class="text-muted small"><i class="fa-solid fa-phone me-2"></i> +62 812-3456-7890</p>
+                </div>
+            </div>
+            <div class="border-top pt-3 text-center text-muted small">
+                <p class="mb-0">&copy; 2026 SehatCare. Seluruh Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
