@@ -33,25 +33,23 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
         
-        user = user.query.filter_by(username=username).first()
-        if user:
+        cek_username = user.query.filter_by(username=username).first()
+        if cek_username:
             flash('username sudah ada', 'coba username lain')
             return redirect(url_for('auth.register'))
         
-        user = user.query.filter_by(email=email).first()
-        if user:
+        cek_email = user.query.filter_by(email=email).first()
+        if cek_email:
             flash('email sudah ada', 'coba email lain')
             return redirect(url_for('auth.register'))
         
         user_baru = user(
             username=username,
             email=email,
-            password=password,
-            role='customer',
             alamat='belum diisi',
             no_hp='belum diisi',
             avatar='default.png',
-            )
+        )
 
         user_baru.set_password(password)
         db.session.add(user_baru)

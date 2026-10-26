@@ -40,6 +40,14 @@ class user(UserMixin, db.Model):
     orders = db.relationship("Order", backref="users", lazy=True)
     cart_items = db.relationship("Keranjang_item", backref="users", lazy=True)
 
+    def __init__(self, username, email, alamat, no_hp, avatar='default.png', role='customer'):
+        self.username = username
+        self.email = email
+        self.alamat = alamat
+        self.no_hp = no_hp
+        self.avatar = avatar
+        self.role = role
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
