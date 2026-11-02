@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Keranjang Belanja - TokoKu{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-4">Keranjang Belanja</h2>
+
+{% if items %}
+<div class="row g-4">
+    <!-- Tabel Keranjang -->
+    <div class="col-lg-8">
+        <div class="card overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-muted small text-uppercase">
+                        <tr>
+                            <th class="ps-4 py-3">Produk</th>
+                            <th class="py-3 text-end">Harga</th>
+                            <th class="py-3 text-center" width="180px">Jumlah</th>
+                            <th class="py-3 text-end">Subtotal</th>
+                            <th class="py-3 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ url_for('static', filename='uploads/products/' + item.product.gambar) }}"
+                                        width="70" class="rounded me-3 object-fit-cover" style="height: 70px;"
+                                        onerror="this.src='https://via.placeholder.com/70'">
+                                    <div>
+                                        <h6 class="fw-bold mb-1 text-truncate" style="max-width: 200px;">{{
+                                            item.product.nama }}</h6>
+                                        <small class="text-muted">{{ item.product.kategori }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-end text-muted">Rp {{ '{:,}'.format(item.product.harga).replace(',', '.') }}
+                            </td>
+                            <td class="text-center">
+                                <form method="POST" action="{{ url_for('cart.update', item_id=item.id) }}"
+                                    class="d-flex justify-content-center gap-1">
+                                    <input type="number" name="jumlah" value="{{ item.jumlah }}" min="1"
+                                        max="{{ item.product.stok }}" class="form-control form-control-sm text-center"
+                                        style="width: 60px;">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary" title="Update">
+                                        <span class="material-symbols-outlined fs-5">sync</span>
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="text-end fw-bold text-primary-custom">Rp {{ '{:,}'.format(item.product.harga *
+                                item.jumlah).replace(',', '.') }}</td>
+                            <td class="text-center">
+                                <form method="POST" action="{{ url_for('cart.remove', item_id=item.id) }}"
+                                    onsubmit="return confirm('Hapus produk ini dari keranjang?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
+                                        <span class="material-symbols-outlined fs-5">delete</span>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ringkasan Belanja -->
+    <div class="col-lg-4">
+        <div class="card p-4 position-sticky" style="top: 100px;">
+            <h5 class="fw-bold mb-4 border-bottom pb-2">Ringkasan Belanja</h5>
+            <div class="d-flex justify-content-between mb-2 text-muted">
+                <span>Total Item</span>
+                <span class="fw-bold text-dark">{{ items|length }} Barang</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <span class="fw-bold">Total Belanja</span>
+                <h3 class="text-success fw-bolder mb-0">Rp {{ '{:,}'.format(total).replace(',', '.') }}</h3>
+            </div>
+
+            <a href="{{ url_for('checkout.index') }}"
+                class="btn btn-success-custom btn-lg w-100 d-flex justify-content-center align-items-center gap-2 mb-2">
+                <span class="material-symbols-outlined">lock</span> Checkout Sekarang
+            </a>
+            <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary w-100">
+                Lanjut Belanja
+            </a>
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- Keranjang Kosong -->
+<div class="card text-center py-5">
+    <div class="card-body">
+        <span class="material-symbols-outlined text-muted mb-3" style="font-size: 4rem;">remove_shopping_cart</span>
+        <h4 class="fw-bold">Keranjang Kamu Masih Kosong</h4>
+        <p class="text-muted mb-4">Ayo cari produk kebutuhanmu dan mulai belanja sekarang!</p>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary-custom px-4 py-2">
+            Mulai Belanja
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

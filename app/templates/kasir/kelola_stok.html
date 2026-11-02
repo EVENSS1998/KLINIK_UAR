@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Kelola Stok Barang{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Kelola Stok Barang</h2>
+    <a href="{{ url_for('kasir.dashboard') }}" class="btn btn-secondary">
+        <span class="material-symbols-outlined" style="font-size: 1.2rem; vertical-align: middle;">arrow_back</span>
+        Kembali ke Dashboard
+    </a>
+</div>
+
+<div class="card p-0 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light text-muted small text-uppercase">
+                <tr>
+                    <th class="ps-4 py-3">Nama Produk</th>
+                    <th class="py-3">Kategori</th>
+                    <th class="py-3 text-center">Stok Saat Ini</th>
+                    <th class="py-3 text-center">Tambah Stok</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in produk %}
+                <tr>
+                    <td class="ps-4 fw-bold">{{ p.nama }}</td>
+                    <td>{{ p.kategori }}</td>
+                    <td class="text-center">
+                        <span class="badge {% if p.stok > 5 %}bg-success{% else %}bg-danger{% endif %} fs-6">
+                            {{ p.stok }}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <form method="POST" class="d-flex justify-content-center gap-2">
+                            <input type="hidden" name="product_id" value="{{ p.id }}">
+                            <input type="number" name="tambahan" class="form-control form-control-sm text-center"
+                                style="width: 80px;" min="1" placeholder="Qty" required>
+                            <button type="submit" class="btn btn-sm btn-primary-custom">Tambah</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center py-4 text-muted">Belum ada produk di katalog.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

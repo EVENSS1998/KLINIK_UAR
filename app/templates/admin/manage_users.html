@@ -1,31 +1,36 @@
 {% extends "base.html" %}
-
 {% block title %}Kelola Pengguna - Admin{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Kelola Pengguna</h2>
+<h2 class="fw-bold mb-4">Kelola Pengguna</h2>
 
-<div class="table-responsive">
-    <table class="table table-bordered table-hover">
-        <thead class="table-secondary">
+<div class="card p-0 overflow-hidden">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light text-muted small text-uppercase">
             <tr>
-                <th>#</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Aksi</th>
+                <th class="ps-4 py-3">Username</th>
+                <th class="py-3">Email</th>
+                <th class="py-3">No HP</th>
+                <th class="py-3">Role</th>
+                <th class="py-3 text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
+            {% for u in users %}
             <tr>
-                <td>1</td>
-                <td>John Doe</td>
-                <td>john@example.com</td>
-                <td><span class="badge bg-info">User</span></td>
-                <td>
-                    <button class="btn btn-sm btn-danger">Hapus</button>
+                <td class="ps-4 fw-bold">{{ u.username }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.no_hp }}</td>
+                <td><span class="badge bg-info">{{ u.role|capitalize }}</span></td>
+                <td class="text-center">
+                    <form method="POST" action="{{ url_for('admin.delete_user', id=u.id) }}" class="d-inline"
+                        onsubmit="return confirm('Hapus user ini?')">
+                        <button type="submit" class="btn btn-sm btn-danger" {% if u.id==current_user.id %}disabled{%
+                            endif %}>Hapus</button>
+                    </form>
                 </td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

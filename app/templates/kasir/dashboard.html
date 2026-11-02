@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard Kasir{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Dashboard Kasir</h2>
+    <a href="{{ url_for('kasir.laporan_pdf') }}" class="btn btn-danger">
+        <i class="bi bi-file-earmark-pdf"></i> Download Laporan PDF
+    </a>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card bg-success text-white p-3 shadow-sm border-0">
+            <h6>Total Pendapatan (Masuk)</h6>
+            <h3 class="fw-bold">Rp {{ '{:,}'.format(total_masuk).replace(',', '.') }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-danger text-white p-3 shadow-sm border-0">
+            <h6>Total Pengeluaran (Keluar)</h6>
+            <h3 class="fw-bold">Rp {{ '{:,}'.format(total_keluar).replace(',', '.') }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-primary text-white p-3 shadow-sm border-0">
+            <h6>Saldo Kas Bersih</h6>
+            <h3 class="fw-bold">Rp {{ '{:,}'.format(saldo).replace(',', '.') }}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0">Riwayat Pengeluaran</h5>
+        <a href="{{ url_for('kasir.tambah_pengeluaran') }}" class="btn btn-primary btn-sm">+ Tambah Pengeluaran</a>
+    </div>
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Tanggal</th>
+                <th>Keterangan</th>
+                <th>Jumlah</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in riwayat %}
+            <tr>
+                <td>{{ p.tanggal.strftime('%d-%m-%Y') }}</td>
+                <td>{{ p.keterangan }}</td>
+                <td class="text-danger fw-bold">- Rp {{ '{:,}'.format(p.jumlah).replace(',', '.') }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">Belum ada catatan pengeluaran.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

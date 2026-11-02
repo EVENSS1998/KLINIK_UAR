@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.nama }} - TokoKu{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}" class="text-decoration-none">Katalog</a></li>
+        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">{{ product.kategori }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ product.nama }}</li>
+    </ol>
+</nav>
+
+<div class="card p-4 mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-5 mb-4 mb-md-0">
+            <div class="rounded-3 overflow-hidden bg-light" style="aspect-ratio: 1/1;">
+                <img src="{{ url_for('static', filename='uploads/products/' + product.gambar) }}"
+                    class="w-100 h-100 object-fit-cover" onerror="this.src='https://via.placeholder.com/500'">
+            </div>
+        </div>
+        <div class="col-md-7">
+            <span class="badge bg-secondary mb-2">{{ product.kategori }}</span>
+            <h2 class="fw-bold mb-3">{{ product.nama }}</h2>
+
+            <div class="bg-light p-3 rounded-3 mb-3">
+                <h3 class="text-success fw-bolder mb-0">Rp {{ '{:,}'.format(product.harga).replace(',', '.') }}</h3>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 mb-4">
+                <span class="text-muted">Stok tersedia:</span>
+                <span class="fw-bold text-success">{{ product.stok }} unit</span>
+            </div>
+
+            {% if current_user.is_authenticated %}
+            {% if product.stok > 0 %}
+            <form method="POST" action="{{ url_for('cart.add', product_id=product.id) }}"
+                class="d-flex gap-3 align-items-end">
+                <div>
+                    <label class="form-label small text-muted fw-bold">Jumlah Beli</label>
+                    <input type="number" name="jumlah" value="1" min="1" max="{{ product.stok }}"
+                        class="form-control form-control-lg" style="width: 100px;" required>
+                </div>
+                <button type="submit" class="btn btn-success-custom btn-lg d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined">add_shopping_cart</span> Tambah ke Keranjang
+                </button>
+            </form>
+            {% else %}
+            <button class="btn btn-secondary btn-lg" disabled>Stok Habis</button>
+            {% endif %}
+            {% else %}
+            <div class="alert alert-info d-flex align-items-center gap-2">
+                <span class="material-symbols-outlined">info</span>
+                Silakan <a href="{{ url_for('auth.login') }}" class="alert-link">Login</a> untuk membeli produk ini.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Ulasan -->
+<div class="card p-4">
+    <h4 class="fw-bold mb-4 border-bottom pb-3">Ulasan Pembeli ({{ ulasan|length }})</h4>
+
+    {% for r in ulasan %}
+    <div class="bg-light p-3 rounded-3 mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 40px; height: 40px; font-weight: bold;">
+                    {{ r.users.username[0]|upper }}
+                </div>
+                <div>
+                    <strong class="d-block text-dark">{{ r.users.username }}</strong>
+                    <div class="text-warning" style="font-size: 0.9rem;">
+                        {% for _ in range(r.rating) %}⭐{% endfor %}
+                    </div>
+                </div>
+            </div>
+            <small class="text-muted">{{ r.created_at.strftime('%d-%m-%Y') }}</small>
+        </div>
+        <p class="mb-0 text-muted">{{ r.komentar }}</p>
+    </div>
+    {% else %}
+    <p class="text-muted text-center py-4">Belum ada ulasan untuk produk ini.</p>
+    {% endfor %}
+</div>
+{% endblock %}

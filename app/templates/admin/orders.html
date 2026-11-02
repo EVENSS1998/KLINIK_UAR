@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Kelola Pesanan - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Kelola Pesanan</h2>
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">&larr; Kembali ke Dashboard</a>
+</div>
+
+<div class="card p-0 overflow-hidden shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light text-muted small text-uppercase">
+                <tr>
+                    <th class="ps-4 py-3">Kode Transaksi</th>
+                    <th class="py-3">Pembeli</th>
+                    <th class="py-3">Tanggal</th>
+                    <th class="py-3">Total Harga</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="ps-4 fw-bold text-primary-custom">{{ order.kode_transaksi }}</td>
+                    <td>
+                        <span class="fw-semibold">{{ order.users.username }}</span><br>
+                        <small class="text-muted">{{ order.users.email }}</small>
+                    </td>
+                    <td>{{ order.created_at.strftime('%d %b %Y, %H:%M') }}</td>
+                    <td class="fw-bold">Rp {{ '{:,}'.format(order.total_harga).replace(',', '.') }}</td>
+                    <td>
+                        {% if order.status == 'menunggu_pembayaran' %}
+                        <span class="badge bg-warning text-dark">Belum Bayar</span>
+                        {% elif order.status == 'menunggu_verifikasi' %}
+                        <span class="badge bg-info text-dark">Butuh Verifikasi</span>
+                        {% elif order.status == 'dibayar' %}
+                        <span class="badge bg-primary">Lunas</span>
+                        {% elif order.status == 'dikirim' %}
+                        <span class="badge bg-success">Dikirim</span>
+                        {% elif order.status == 'ditolak' %}
+                        <span class="badge bg-danger">Ditolak</span>
+                        {% else %}
+                        <span class="badge bg-secondary">{{ order.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ url_for('admin.order_detail', order_id=order.id) }}"
+                            class="btn btn-sm btn-outline-primary">
+                            Cek Pesanan
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-muted">Belum ada pesanan masuk.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

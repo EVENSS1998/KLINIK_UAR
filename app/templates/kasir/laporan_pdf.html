@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Laporan Pengeluaran Bulanan</h2>
+    <p style="text-align: center;">Bulan: {{ bulan }} {{ tahun }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Tanggal</th>
+                <th>Keterangan</th>
+                <th class="text-right">Jumlah (Rp)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set ns = namespace(total=0) %}
+            {% for p in pengeluaran %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ p.tanggal.strftime('%d-%m-%Y') }}</td>
+                <td>{{ p.keterangan }}</td>
+                <td class="text-right">{{ '{:,}'.format(p.jumlah).replace(',', '.') }}</td>
+            </tr>
+            {% set ns.total = ns.total + p.jumlah %}
+            {% else %}
+            <tr>
+                <td colspan="4" style="text-align: center;">Tidak ada pengeluaran di bulan ini.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="3" class="text-right">Total Pengeluaran</th>
+                <th class="text-right">Rp {{ '{:,}'.format(ns.total).replace(',', '.') }}</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+
+</html>

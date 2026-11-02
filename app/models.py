@@ -97,3 +97,18 @@ class PesananItem(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     product = db.relationship("Product")
+
+class Pengeluaran(db.Model):
+    __tablename__ = "pengeluaran"
+    id = db.Column(db.Integer, primary_key=True)
+    keterangan = db.Column(db.String(255), nullable=False)
+    jumlah = db.Column(db.Integer, nullable=False)
+    deskripsi = db.Column(db.Text, nullable=False)
+    tanggal = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __init__(self, keterangan, jumlah, deskripsi):
+        self.keterangan = keterangan
+        self.jumlah = jumlah
+        self.deskripsi = deskripsi
+        self.tanggal = datetime.utcnow()

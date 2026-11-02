@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Tambah Pengeluaran{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h3 class="fw-bold mb-4">Catat Pengeluaran Baru</h3>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.keterangan.label(class="form-label fw-semibold") }}
+                    {{ form.keterangan(class="form-control", placeholder="Contoh: Beli ATK, Bayar Listrik, dll") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.jumlah.label(class="form-label fw-semibold") }}
+                    {{ form.jumlah(class="form-control", placeholder="Contoh: 50000") }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Simpan Pengeluaran</button>
+                <a href="{{ url_for('kasir.dashboard') }}" class="btn btn-outline-secondary w-100 mt-2">Batal</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

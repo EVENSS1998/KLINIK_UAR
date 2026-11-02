@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Riwayat Pesanan - TokoKu{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-4">Riwayat Pesanan</h2>
+
+<div class="card p-0 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light text-muted small text-uppercase">
+                <tr>
+                    <th class="ps-4 py-3">Kode Transaksi</th>
+                    <th class="py-3">Tanggal</th>
+                    <th class="py-3">Total Harga</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="ps-4 fw-bold text-primary-custom">{{ order.kode_transaksi }}</td>
+                    <td>{{ order.created_at.strftime('%d %b %Y, %H:%M') }}</td>
+                    <td class="fw-semibold">Rp {{ '{:,}'.format(order.total_harga).replace(',', '.') }}</td>
+                    <td>
+                        {% if order.status == 'menunggu_pembayaran' %}
+                        <span class="badge bg-warning text-dark">Menunggu Pembayaran</span>
+                        {% elif order.status == 'menunggu_verifikasi' %}
+                        <span class="badge bg-info text-dark">Verifikasi Bukti</span>
+                        {% elif order.status == 'dibayar' %}
+                        <span class="badge bg-primary">Diproses</span>
+                        {% elif order.status == 'dikirim' %}
+                        <span class="badge bg-success">Dikirim</span>
+                        {% else %}
+                        <span class="badge bg-secondary">{{ order.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ url_for('user.order_detail', order_id=order.id) }}"
+                            class="btn btn-sm btn-outline-primary">Lihat Detail</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">Belum ada riwayat pesanan.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

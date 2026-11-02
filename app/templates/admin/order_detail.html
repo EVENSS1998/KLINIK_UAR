@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Detail Pesanan - Admin{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('admin.orders') }}">Kelola Pesanan</a></li>
+        <li class="breadcrumb-item active">{{ order.kode_transaksi }}</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-md-7">
+        <div class="card p-4 shadow-sm border-0">
+            <h5 class="fw-bold border-bottom pb-3 mb-3">Rincian Barang</h5>
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items %}
+                    <tr>
+                        <td class="fw-semibold">{{ item.product.nama }}</td>
+                        <td>Rp {{ '{:,}'.format(item.harga_satuan).replace(',', '.') }}</td>
+                        <td>{{ item.jumlah }}</td>
+                        <td class="fw-bold">Rp {{ '{:,}'.format(item.subtotal).replace(',', '.') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between border-top pt-3 mt-3">
+                <h5 class="fw-bold">Total Belanja</h5>
+                <h4 class="fw-bolder text-success">Rp {{ '{:,}'.format(order.total_harga).replace(',', '.') }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card p-4 shadow-sm border-0">
+            <h5 class="fw-bold border-bottom pb-3 mb-3">Status & Bukti Pembayaran</h5>
+
+            <p class="mb-1 text-muted small">Pembeli:</p>
+            <p class="fw-semibold">{{ order.users.username }} ({{ order.users.no_hp }})</p>
+
+            <p class="mb-1 text-muted small">Alamat Pengiriman:</p>
+            <p class="fw-semibold">{{ order.alamat_pengiriman }}</p>
+
+            <p class="mb-1 text-muted small mt-3">Status Pesanan:</p>
+            <span class="badge bg-info text-dark fs-6 mb-4">{{ order.status }}</span>
+
+            {% if order.bukti_bayar %}
+            <p class="mb-1 text-muted small">Bukti Transfer:</p>
+            <img src="{{ url_for('static', filename='uploads/bukti/' + order.bukti_bayar) }}"
+                class="img-fluid rounded border mb-3"
+                onerror="this.src='https://via.placeholder.com/300x200?text=Gambar+Tidak+Ditemukan'">
+
+            {% if order.status == 'menunggu_verifikasi' %}
+            <div class="d-flex gap-2">
+                <form method="POST" action="{{ url_for('admin.approve_order', order_id=order.id) }}" class="w-50">
+                    <button type="submit" class="btn btn-success w-100"
+                        onclick="return confirm('Setujui pembayaran ini?')">Approve</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin.tolak_order', order_id=order.id) }}" class="w-50">
+                    <button type="submit" class="btn btn-danger w-100"
+                        onclick="return confirm('Tolak pembayaran ini?')">Tolak</button>
+                </form>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="alert alert-warning mt-3">Pembeli belum mengunggah bukti bayar.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

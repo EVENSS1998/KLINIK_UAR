@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Detail Pesanan - TokoKu{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('user.orders') }}">Riwayat Pesanan</a></li>
+        <li class="breadcrumb-item active">{{ order.kode_transaksi }}</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h5 class="fw-bold border-bottom pb-3 mb-3">Rincian Barang</h5>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Produk</th>
+                            <th>Harga Satuan</th>
+                            <th>Qty</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items %}
+                        <tr>
+                            <td class="fw-semibold">{{ item.product.nama }}</td>
+                            <td>Rp {{ '{:,}'.format(item.harga_satuan).replace(',', '.') }}</td>
+                            <td>{{ item.jumlah }}</td>
+                            <td class="fw-bold">Rp {{ '{:,}'.format(item.subtotal).replace(',', '.') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-between border-top pt-3 mt-3">
+                <h5 class="fw-bold">Total Belanja</h5>
+                <h4 class="fw-bolder text-success">Rp {{ '{:,}'.format(order.total_harga).replace(',', '.') }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-4">
+            <h5 class="fw-bold border-bottom pb-3 mb-3">Info Pengiriman</h5>
+            <p class="mb-1 text-muted small">Alamat Tujuan:</p>
+            <p class="fw-semibold">{{ order.alamat_pengiriman }}</p>
+
+            <p class="mb-1 text-muted small mt-3">Status Pesanan:</p>
+            <span class="badge bg-info text-dark fs-6">{{ order.status }}</span>
+
+            {% if order.bukti_bayar %}
+            <p class="mb-1 text-muted small mt-4">Bukti Pembayaran:</p>
+            <img src="{{ url_for('static', filename='uploads/bukti_bayar/' + order.bukti_bayar) }}"
+                class="img-fluid rounded border mt-1">
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

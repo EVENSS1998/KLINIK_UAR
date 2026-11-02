@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Checkout - TokoKu{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-4">Checkout Pesanan</h2>
+
+<div class="row g-4">
+    <div class="col-md-7">
+        <div class="card p-4">
+            <h5 class="fw-bold mb-3">Alamat Pengiriman</h5>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.alamat_pengiriman.label(class="form-label fw-semibold") }}
+                    {{ form.alamat_pengiriman(class="form-control", rows="3", placeholder="Tulis alamat lengkap (Jalan,
+                    RT/RW, Kelurahan, Kecamatan, Kota, Kode Pos)") }}
+                    {% for error in form.alamat_pengiriman.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.no_hp.label(class="form-label fw-semibold") }}
+                    {{ form.no_hp(class="form-control", placeholder="Masukkan nomor HP aktif") }}
+                    {% for error in form.no_hp.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="alert alert-info small mt-3">
+                    <span class="material-symbols-outlined"
+                        style="font-size: 1.1rem; vertical-align: text-bottom;">info</span>
+                    Pastikan alamat dan nomor HP sudah benar sebelum melanjutkan.
+                </div>
+
+                <button type="submit" class="btn btn-success-custom btn-lg w-100 mt-3">Buat Pesanan</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card p-4">
+            <h5 class="fw-bold mb-3 border-bottom pb-2">Ringkasan Pesanan</h5>
+            <ul class="list-group list-group-flush mb-3">
+                {% for item in items %}
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
+                    <div>
+                        <h6 class="my-0 fw-bold">{{ item.product.nama }}</h6>
+                        <small class="text-muted">{{ item.jumlah }} x Rp {{
+                            '{:,}'.format(item.product.harga).replace(',', '.') }}</small>
+                    </div>
+                    <span class="text-dark fw-semibold">Rp {{ '{:,}'.format(item.product.harga *
+                        item.jumlah).replace(',', '.') }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <span class="fw-bold fs-5">Total:</span>
+                <span class="fw-bolder fs-4 text-success">Rp {{ '{:,}'.format(total).replace(',', '.') }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

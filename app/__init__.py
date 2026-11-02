@@ -27,13 +27,17 @@ def create_app():
     from app.routes.main import valo as main_valo
     from app.routes.admin import admin_valo
     from app.routes.auth import auth_valo
-    # from app.routes.cart import cart_blue
-    # from app.routes.checkout import checkout_blue
+    from app.routes.cart import cart_blue
+    from app.routes.checkout import checkout_blue
+    from app.routes.user import user_blue
+    from app.routes.kasir import kasir_blue
 
     app.register_blueprint(main_valo)
     app.register_blueprint(admin_valo, url_prefix='/admin')
     app.register_blueprint(auth_valo, url_prefix='/auth')
-    # app.register_blueprint(cart_blue, url_prefix='/cart')
-    # app.register_blueprint(checkout_blue, url_prefix='/checkout')
+    app.register_blueprint(cart_blue, url_prefix='/cart')
+    app.register_blueprint(checkout_blue, url_prefix='/checkout')
+    app.register_blueprint(user_blue, url_prefix='/user')
+    app.register_blueprint(kasir_blue, url_prefix='/kasir')
     
     return app

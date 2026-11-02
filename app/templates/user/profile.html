@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Profil Saya - TokoKu{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h3 class="fw-bold mb-4 border-bottom pb-3">Profil Saya</h3>
+
+            <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                    <img src="{{ url_for('static', filename='uploads/avatars/' + current_user.avatar) }}"
+                        class="img-fluid rounded-circle border shadow-sm mb-3"
+                        style="width: 150px; height: 150px; object-fit: cover;"
+                        onerror="this.src='https://via.placeholder.com/150'">
+                    <h5 class="fw-bold mb-0">{{ current_user.username }}</h5>
+                    <span class="badge bg-primary mt-2">{{ current_user.role|capitalize }}</span>
+                </div>
+
+                <div class="col-md-8">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.username.label(class="form-label fw-semibold") }}
+                            {{ form.username(class="form-control") }}
+                            {% for error in form.username.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label fw-semibold") }}
+                            {{ form.email(class="form-control") }}
+                            {% for error in form.email.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.no_hp.label(class="form-label fw-semibold") }}
+                            {{ form.no_hp(class="form-control") }}
+                            {% for error in form.no_hp.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.alamat.label(class="form-label fw-semibold") }}
+                            {{ form.alamat(class="form-control", rows="3") }}
+                            {% for error in form.alamat.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form.avatar.label(class="form-label fw-semibold") }}
+                            {{ form.avatar(class="form-control") }}
+                            {% for error in form.avatar.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                            <div class="form-text">Biarkan kosong jika tidak ingin mengubah foto profil.</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2 fw-bold">Simpan
+                            Perubahan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

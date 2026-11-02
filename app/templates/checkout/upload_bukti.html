@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Upload Bukti Bayar - TokoKu{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4 text-center">
+            <span class="material-symbols-outlined text-primary mx-auto mb-2"
+                style="font-size: 4rem;">account_balance_wallet</span>
+            <h3 class="fw-bold">Upload Bukti Pembayaran</h3>
+            <p class="text-muted">Kode Transaksi: <strong class="text-dark">{{ order.kode_transaksi }}</strong></p>
+
+            <div class="alert alert-warning my-3">
+                Total Tagihan: <strong class="fs-5 text-danger">Rp {{ '{:,}'.format(order.total_harga).replace(',', '.')
+                    }}</strong>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="text-start mt-3">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.bukti_bayar.label(class="form-label fw-bold") }}
+                    {{ form.bukti_bayar(class="form-control form-control-lg") }}
+                    {% for error in form.bukti_bayar.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                    <div class="form-text">Format yang diizinkan: JPG, JPEG, PNG. Maksimal 5MB.</div>
+                </div>
+                <button type="submit" class="btn btn-primary-custom btn-lg w-100">Kirim Bukti Pembayaran</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
