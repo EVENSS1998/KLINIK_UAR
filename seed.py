@@ -10,9 +10,9 @@ with app.app_context():
     if not user.query.filter_by(username='admin1').first():
         user_admin = user(
             username='admin1',
-            email='Mifzal22107@gmail.com',
+            email='Mifzal22197@gmail.com',
             role='admin',
-            no_hp='089679441438',
+            no_hp='089679441458',
             alamat='Jl. Mediterania No. 1',
             avatar='default.png',
         )

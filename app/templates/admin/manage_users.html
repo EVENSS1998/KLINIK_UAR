@@ -4,34 +4,70 @@
 {% block content %}
 <h2 class="fw-bold mb-4">Kelola Pengguna</h2>
 
-<div class="card p-0 overflow-hidden">
-    <table class="table table-hover align-middle mb-0">
-        <thead class="bg-light text-muted small text-uppercase">
-            <tr>
-                <th class="ps-4 py-3">Username</th>
-                <th class="py-3">Email</th>
-                <th class="py-3">No HP</th>
-                <th class="py-3">Role</th>
-                <th class="py-3 text-center">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for u in users %}
-            <tr>
-                <td class="ps-4 fw-bold">{{ u.username }}</td>
-                <td>{{ u.email }}</td>
-                <td>{{ u.no_hp }}</td>
-                <td><span class="badge bg-info">{{ u.role|capitalize }}</span></td>
-                <td class="text-center">
-                    <form method="POST" action="{{ url_for('admin.delete_user', id=u.id) }}" class="d-inline"
-                        onsubmit="return confirm('Hapus user ini?')">
-                        <button type="submit" class="btn btn-sm btn-danger" {% if u.id==current_user.id %}disabled{%
-                            endif %}>Hapus</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="card p-0 overflow-hidden shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light text-muted small text-uppercase">
+                <tr>
+                    <th class="ps-4 py-3">Username</th>
+                    <th class="py-3">Email</th>
+                    <th class="py-3">Role</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3">Terakhir Login</th>
+                    <th class="py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td class="ps-4 fw-bold">{{ u.username }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>
+                        <span
+                            class="badge bg-{{ 'danger' if u.role == 'admin' else ('warning text-dark' if u.role == 'kasir' else 'info') }}">
+                            {{ u.role|capitalize }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if u.is_active %}
+                        <span class="badge bg-success">Aktif</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Nonaktif</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if u.last_login %}
+                        {{ u.last_login.strftime('%d %b %Y, %H:%M') }}
+                        {% else %}
+                        <span class="text-muted small">Belum pernah</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <!-- Tombol Blokir / Buka Blokir -->
+                        <form method="POST" action="{{ url_for('admin.toggle_user_status', id=u.id) }}"
+                            class="d-inline">
+                            <button type="submit"
+                                class="btn btn-sm {{ 'btn-outline-danger' if u.is_active else 'btn-outline-success' }}"
+                                {% if u.id==current_user.id %}disabled{% endif %}>
+                                {{ 'Blokir' if u.is_active else 'Buka Blokir' }}
+                            </button>
+                        </form>
+
+                        <!-- Tombol Hapus -->
+                        <form method="POST" action="{{ url_for('admin.delete_user', id=u.id) }}" class="d-inline"
+                            onsubmit="return confirm('Yakin ingin menghapus user ini secara permanen?')">
+                            <button type="submit" class="btn btn-sm btn-danger" {% if u.id==current_user.id %}disabled{%
+                                endif %}>Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-muted">Belum ada pengguna terdaftar.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

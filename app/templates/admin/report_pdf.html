@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 0;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Laporan Penjualan TokoKu</h2>
+    <p>
+        {% if start_date and end_date %}
+        Periode: {{ start_date }} s/d {{ end_date }}
+        {% else %}
+        Semua Periode
+        {% endif %}
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="text-center">No</th>
+                <th>Tanggal</th>
+                <th>Kode Transaksi</th>
+                <th>Pembeli</th>
+                <th class="text-right">Total (Rp)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td class="text-center">{{ loop.index }}</td>
+                <td>{{ order.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+                <td>{{ order.kode_transaksi }}</td>
+                <td>{{ order.users.username }}</td>
+                <td class="text-right">{{ '{:,}'.format(order.total_harga).replace(',', '.') }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">Tidak ada data transaksi.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="text-right">Total Pendapatan</th>
+                <th class="text-right">Rp {{ '{:,}'.format(total_pendapatan).replace(',', '.') }}</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+
+</html>

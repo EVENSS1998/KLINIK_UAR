@@ -1,3 +1,4 @@
+from datetime import datetime
 import uuid
 from app.forms import RegistrasiForm
 from flask import Blueprint, render_template, redirect, url_for, flash, request
@@ -18,7 +19,14 @@ def login():
         
         pengguna = user.query.filter_by(username=username).first()
         if pengguna and pengguna.check_password(password):
+
+            if not pengguna.is_active:
+                flash('Akun telah dinonaktifkan oleh admin epen yang gantenks.', 'danger')
+                return redirect(url_for('auth.login'))
+
             login_user(pengguna)
+            pengguna.last_login = datetime.now()
+            db.session.commit()
 
             if pengguna.role == 'kasir':
                 return redirect(url_for('kasir.dashboard'))

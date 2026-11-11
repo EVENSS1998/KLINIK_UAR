@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Laporan Penjualan - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Laporan Penjualan</h2>
+    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">&larr; Kembali ke Dashboard</a>
+</div>
+
+<div class="card p-4 mb-4 shadow-sm border-0">
+    <form method="GET" action="{{ url_for('admin.reports') }}" class="row align-items-end g-3">
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Dari Tanggal</label>
+            <input type="date" name="start_date" class="form-control" value="{{ start_date or '' }}" required>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Sampai Tanggal</label>
+            <input type="date" name="end_date" class="form-control" value="{{ end_date or '' }}" required>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary-custom w-100">Filter Laporan</button>
+        </div>
+    </form>
+</div>
+
+<div class="card p-0 overflow-hidden shadow-sm border-0">
+    <div class="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
+        <h5 class="mb-0 fw-bold">Total Pendapatan: <span class="text-success">Rp {{
+                '{:,}'.format(total_pendapatan).replace(',', '.') }}</span></h5>
+        <!-- Tombol Export PDF (Membawa parameter tanggal yang sedang aktif) -->
+        <a href="{{ url_for('admin.reports_pdf', start_date=start_date, end_date=end_date) }}" class="btn btn-danger">
+            <span class="material-symbols-outlined"
+                style="font-size: 1.2rem; vertical-align: middle;">picture_as_pdf</span> Export PDF
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light text-muted small text-uppercase">
+                <tr>
+                    <th class="ps-4 py-3">Kode Transaksi</th>
+                    <th class="py-3">Tanggal</th>
+                    <th class="py-3">Pembeli</th>
+                    <th class="py-3">Total</th>
+                    <th class="py-3">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="ps-4 fw-bold text-primary-custom">{{ order.kode_transaksi }}</td>
+                    <td>{{ order.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+                    <td>{{ order.users.username }}</td>
+                    <td class="fw-bold">Rp {{ '{:,}'.format(order.total_harga).replace(',', '.') }}</td>
+                    <td><span class="badge bg-success">Lunas</span></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">Tidak ada transaksi pada rentang tanggal ini.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

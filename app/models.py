@@ -2,6 +2,7 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
+from datetime import datetime
 
 
 class Product(db.Model):
@@ -34,19 +35,24 @@ class user(UserMixin, db.Model):
     avatar = db.Column(db.String(255), nullable=False, default="default.png")
     alamat = db.Column(db.Text, nullable=False)
     no_hp = db.Column(db.String(20), unique=True, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
+    last_login = db.Column(db.DateTime, nullable=True)
+    last_seen = db.Column(db.DateTime, default=datetime.now)
     
     reviews = db.relationship("lihat_review", backref="users", lazy=True)
     orders = db.relationship("Order", backref="users", lazy=True)
     cart_items = db.relationship("Keranjang_item", backref="users", lazy=True)
 
-    def __init__(self, username, email, alamat, no_hp, avatar='default.png', role='customer'):
+    def __init__(self, username, email, alamat, no_hp, avatar='default.png', role='customer', is_active=True):
         self.username = username
         self.email = email
         self.alamat = alamat
         self.no_hp = no_hp
         self.avatar = avatar
         self.role = role
+        self.is_active = is_active
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -62,7 +68,7 @@ class lihat_review(db.Model):
     rating = db.Column(db.Integer, nullable=False)
     review = db.Column(db.Text, nullable=False)
     komentar = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
 class Keranjang_item(db.Model):
     __tablename__ = "keranjang_item"
@@ -70,7 +76,7 @@ class Keranjang_item(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
     jumlah = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     product = db.relationship("Product")
 

@@ -6,6 +6,10 @@ from app import db
 from app.models import Product, user, Order
 from app.forms import ProductForm
 from app.utils import save_file
+from io import BytesIO
+from xhtml2pdf import pisa
+from flask import make_response
+from datetime import datetime
 
 admin_valo = Blueprint("admin", __name__)
 
@@ -132,3 +136,72 @@ def delete_user(id):
         db.session.commit()
         flash('User berhasil dihapus!', 'success')
     return redirect(url_for('admin.manage_users'))
+
+@admin_valo.route("/users/toggle-status/<int:id>", methods=['POST'])
+@admin_required
+def toggle_user_status(id):
+    if id == current_user.id:
+        flash('Anda tidak bisa mengubah status Anda sendiri!', 'danger')
+    else:
+        u = user.query.get_or_404(id)
+        u.is_active = not u.is_active
+        db.session.commit()
+        flash(f"Status user {u.username} berhasil diubah!", "success")
+    return redirect(url_for('admin.manage_users'))
+
+@admin_valo.route("/reports", methods=["GET"])
+@admin_required
+def reports():
+    start_date_str = request.args.get('start_date')
+    end_date_str = request.args.get('end_date')
+    
+    query = Order.query.filter(Order.status.in_(['dibayar', 'dikirim', 'selesai']))
+
+    if start_date_str and end_date_str:
+        try:
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+
+            query = query.filter(Order.created_at >= start_date, Order.created_at <= end_date)
+        except ValueError:
+            flash("Format tanggal tidak valid. Gunakan format YYYY-MM-DD", "danger")
+            
+    orders = query.order_by(Order.created_at.desc()).all()
+    total_pendapatan = sum(order.total_harga for order in orders)
+    total_pesanan = len(orders)
+
+    return render_template("admin/reports.html", orders=orders, total_pendapatan=total_pendapatan, total_pesanan=total_pesanan, start_date=start_date_str, end_date=end_date_str)
+
+
+@admin_valo.route("/reports/pdf")
+@admin_required
+def reports_pdf():
+    start_date_str = request.args.get("start_date")
+    end_date_str = request.args.get("end_date")
+
+    query = Order.query.filter(Order.status.in_(['dibayar', 'dikirim', 'selesai']))
+
+    if start_date_str and end_date_str:
+        try:
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+            query = query.filter(Order.created_at >= start_date, Order.created_at <= end_date)
+        except ValueError:
+            pass
+    orders = query.order_by(Order.created_at.desc()).all()
+    total_pendapatan = sum(o.total_harga for o in orders)
+    total_pesanan = len(orders)
+
+    html = render_template('admin/report_pdf.html', orders=orders, total_pendapatan=total_pendapatan, total_pesanan=total_pesanan, start_date=start_date_str, end_date=end_date_str)
+
+    result = BytesIO()
+    pdf = pisa.CreatePDF(html, dest=result)
+
+    if not pdf.err:
+        response = make_response(result.getvalue())
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = 'attachment; filename=laporan_penjualan.pdf'
+        return response
+    else:
+        flash('Gagal membuat PDF', 'danger')
+        return redirect(url_for('admin.reports'))

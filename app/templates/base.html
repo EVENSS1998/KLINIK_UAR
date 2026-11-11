@@ -85,22 +85,18 @@
 
                     {% if current_user.is_authenticated %}
 
-                    {% if current_user.role == 'customer' %}
+                    <!-- Katalog selalu tampil untuk semua user yang login -->
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Katalog</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('cart.index') }}">
-                            <span class="material-symbols-outlined">shopping_cart</span> Keranjang
-                        </a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user.orders') }}">Pesanan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}">Profil</a></li>
 
-                    {% elif current_user.role == 'admin' %}
+                    {% if current_user.role == 'admin' %}
                     <li class="nav-item"><a class="nav-link text-warning fw-bold"
                             href="{{ url_for('admin.dashboard') }}">Admin Panel</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.manage_products') }}">Kelola
                             Produk</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.orders') }}">Kelola Pesanan</a>
+                    </li>
+                    <!-- MENU LAPORAN PENJUALAN SUDAH DITAMBAHKAN -->
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.reports') }}">Laporan Penjualan</a>
                     </li>
 
                     {% elif current_user.role == 'kasir' %}
@@ -108,6 +104,16 @@
                             href="{{ url_for('kasir.dashboard') }}">Dashboard Kasir</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('kasir.kelola_stok') }}">Kelola Stok</a>
                     </li>
+
+                    {% else %}
+                    <!-- Jika bukan admin & bukan kasir, anggap customer -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cart.index') }}">
+                            <span class="material-symbols-outlined">shopping_cart</span> Keranjang
+                        </a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user.orders') }}">Pesanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}">Profil</a></li>
                     {% endif %}
 
                     <li class="nav-item">
@@ -119,6 +125,7 @@
                             href="{{ url_for('auth.logout') }}">Logout</a></li>
 
                     {% else %}
+                    <!-- Tampilan untuk yang belum login -->
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Katalog</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
                     <li class="nav-item"><a class="btn btn-primary-custom btn-sm ms-2 px-3"
