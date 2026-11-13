@@ -8,7 +8,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
 def save_file(file, folder_key):
-    if not file or file.filename == '':
+    if not file or not hasattr(file, 'filename') or file.filename == '':
         return None
     if not allowed_file(file.filename):
         return None

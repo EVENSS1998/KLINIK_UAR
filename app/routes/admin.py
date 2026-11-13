@@ -1,3 +1,4 @@
+from werkzeug.datastructures import FileStorage
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import current_user
 from sqlalchemy import func
@@ -101,7 +102,7 @@ def edit_product(id):
         produk.harga = form.harga.data
         produk.stok = form.stok.data
         produk.kategori = form.kategori.data
-        if form.gambar.data:
+        if isinstance(form.gambar.data, FileStorage) and form.gambar.data.filename:
             filename = save_file(form.gambar.data, 'PRODUK_FOLDER')
             if filename:
                 produk.gambar = filename
